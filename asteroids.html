@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: black;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var width = canvas.width;
+			var height = canvas.height;
+			var context = canvas.getContext("2d");
+			
+			draw_grid(context);
+			
+			for(i = 0; i < 30; i++){
+				context.save();
+				
+				var options = {};
+				if(Math.random() < 0.5){
+					options.guide = true;
+				}
+				else{
+					options.guide = false;
+				}
+				options.lineWidth = Math.random() * 2 + 1;
+				options.noise = Math.random();
+			
+				segments = Math.round(Math.random() * 15 + 5);
+				shape = [];
+				for(var j = 0; j < segments; j++){
+					shape.push(Math.random() - 0.5);
+				}
+				
+				var w = Math.random() * width * 0.8 + width/10;
+				var h = Math.random() * height * 0.8 + height/10;
+				context.translate(w,h);
+			
+				var radius = Math.random() * 20 + 20;
+				
+				draw_asteroid(context, shape, radius, options);
+			
+				context.restore();
+			}
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: black;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+		<script src = "objects.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var w = canvas.width;
+			var h = canvas.height;
+			var context = canvas.getContext("2d");
+			
+			asteroids = [];
+			for(var i = 0; i < 30; i++){
+				segments = Math.random() * 15 + 5;
+				radius = Math.random() * 15 + 15;
+				noise = Math.random * 0.3 + 0.2;
+				asteroids.push(new Asteroid(segments, radius, noise));
+			}
+			
+			function draw(context, guide){
+				//if(guide){
+					draw_grid(context);
+				//}
+				asteroids.forEach(function(asteroid){
+					asteroid.draw(context, guide);
+				});
+			}
+			
+			function update(elapsed){
+				asteroids.forEach(function(asteroid){
+					asteroid.update(elapsed);
+				});
+			}
+			
+			var previous, elapsed;
+			
+			function frame(timestamp){
+				if(!previous){
+					previous = timestamp;
+				}
+				elapsed = timestamp - previous;
+				
+				context.clearRect(0, 0, w, h);
+				draw(context, false);
+				update(elapsed / 1000);
+				
+				previous = timestamp;
+				window.requestAnimationFrame(frame);
+			}
+			
+			window.requestAnimationFrame(frame);
+			
+		</script>
+	</body>
+</html>

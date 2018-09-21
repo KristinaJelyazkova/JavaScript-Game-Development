@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: black;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var width = canvas.width;
+			var height = canvas.height;
+			var context = canvas.getContext("2d");
+			
+			draw_grid(context);
+			
+			for(i = 0; i < 40; i++){
+				context.save();
+				
+				var w = Math.random() * width * 0.8 + width/10;
+				var h = Math.random() * height * 0.8 + height/10;
+				context.translate(w,h);
+				var angle = Math.random() * 2 * Math.PI;
+				context.rotate(angle);
+			
+				var size = Math.random() * 50 + 10;
+				var options = {};
+				if(Math.random() < 0.5){
+					options.guide = true;
+				}
+				else{
+					options.guide = false;
+				}
+				options.curve1 = Math.random();
+				options.curve2 = Math.random();
+				options.lineWidth = Math.random() * 2 + 1;
+				colors = ['pink', 'blue', 'orange', 'purple', 'green', 'yellow', 'red'];
+				options.fill = colors[Math.round(Math.random() * 7)];
+				options.stroke = colors[Math.round(Math.random() * 7)];
+			
+				draw_spaceship(context, size, options);
+			
+				context.restore();
+			}
+			
+		</script>
+	</body>
+</html>

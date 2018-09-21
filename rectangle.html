@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: black;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			
+			//Rectangle:
+			var canvas = document.getElementById("asteroid");
+				var centerWidth = canvas.width/2;
+				var centerHeight = canvas.height/2;
+			var context = canvas.getContext("2d");
+			context.strokeStyle = '#cc33ff';
+			context.lineWidth = 20;
+			context.rect(canvas.width/4, canvas.height/4, centerWidth, centerHeight);
+			context.fillStyle = '#ffcc99';
+			context.stroke();
+			context.fill();
+			
+			//Text:
+			context.font = "30px Arial";
+			context.fillStyle = "white";
+			context.lineWidth = 1.5;
+			context.strokeStyle = "red";
+			context.textAlign = "center";
+			var msg = "Криси обича Иви";
+			context.fillText(msg, centerWidth, canvas.height/2.7);
+			context.strokeText(msg, centerWidth, canvas.height/2.7);
+			
+			//Heart shape:
+			context.beginPath();
+			context.moveTo(centerWidth, centerHeight);
+			context.bezierCurveTo(centerWidth + 60, centerHeight - 80, 
+				centerWidth + 150, centerHeight + 20,
+					centerWidth, centerHeight + 100);
+			context.moveTo(centerWidth, centerHeight);
+			context.bezierCurveTo(centerWidth - 60, centerHeight - 80, 
+				centerWidth - 150, centerHeight + 20,
+					centerWidth, centerHeight + 100);
+			context.fill();
+			context.stroke();
+			
+		</script>
+	</body>
+</html>

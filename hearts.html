@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: black;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var context = canvas.getContext("2d");
+			draw_grid(context, 15, 45, 'green', '#ccffcc');
+			//draw_grid(context, 5, 30, 'white', 'red');
+			for(var i = 0; i < 50; i++){
+				x = Math.random() * canvas.width;
+				y = Math.random() * canvas.height;
+				size = Math.random() * 10;
+				line = Math.random() * 3;
+				heart_shape(context, x, y, size, line);
+			}
+		</script>
+	</body>
+</html>

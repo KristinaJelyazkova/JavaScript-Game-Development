@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: #ccccb3;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+		<script src = "objects.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var w = canvas.width;
+			var h = canvas.height;
+			var context = canvas.getContext("2d");
+			
+			hearts = [];
+			for(var i = 0; i < 40; i++){
+				size = Math.random() * 5 + 3;
+				hearts.push(new Heart(size));
+			}
+			
+			function draw(context){
+				hearts.forEach(function(heart){
+					heart.draw(context);
+				});
+			}
+			
+			function update(elapsed){
+				hearts.forEach(function(heart){
+					heart.update(elapsed);
+				});
+			}
+			
+			var previous, elapsed;
+			
+			function frame(timestamp){
+				if(!previous){
+					previous = timestamp;
+				}
+				elapsed = timestamp - previous;
+				
+				context.clearRect(0, 0, w, h);
+				draw(context);
+				draw(context);
+				update(elapsed / 1000);
+				
+				previous = timestamp;
+				window.requestAnimationFrame(frame);
+			}
+			
+			window.requestAnimationFrame(frame);
+			
+		</script>
+	</body>
+</html>

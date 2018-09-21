@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: black;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var w = canvas.width;
+			var h = canvas.height;
+			var context = canvas.getContext("2d");
+			
+			let x = 0, y = h / 5, radius = 20,
+				xspeed = 1.5, yspeed = 0, gravity = 0.1,
+				mouth = 0, toStop = false;
+			
+			function frame(){
+				context.clearRect(0, 0, w, h);
+				draw(context);
+				if(toStop == false){
+					update();
+				}
+			}
+			
+			function update(){
+				x += xspeed;
+				y += yspeed;
+				yspeed += gravity; // it accelerates while falling down - like there is gravity
+				
+				//Bouncing:
+				if(y >= h - radius){ // if it hits the bottom
+					y = h - radius;
+					yspeed *= -0.9; // it bounces back and loses some energy, so it slows down and will bounce lower
+					xspeed *= 0.95; // slowing down a bit
+					if(yspeed < 0 && yspeed > -1.65){
+						toStop = true;
+						y = h - radius;
+					}
+				}
+				
+				//Returning back to the canvas width:
+				if(x <= 0 || x >= w){
+					x = (x + w) % w;
+				}
+				
+				mouth = Math.abs(Math.sin(8 * Math.PI * x / w));
+			}
+			
+			function draw(context){
+				draw_grid(context);
+				context.save();
+				context.translate(x, y);
+				draw_pacman(context, radius, mouth);
+				context.restore();
+			}
+			
+			setInterval(frame, 1000.0/60.0);
+			
+		</script>
+	</body>
+</html>

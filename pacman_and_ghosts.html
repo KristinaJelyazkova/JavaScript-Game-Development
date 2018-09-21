@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: #ccffe6;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var centerWidth = canvas.width/2;
+			var centerHeight = canvas.height/2;
+			var context = canvas.getContext("2d");
+			
+			draw_grid(context, 10, 50, 'green', 'black');
+			
+			context.save();
+			context.translate(centerWidth/2, centerHeight);
+			draw_pacman(context, 100, 1);
+			context.restore();
+			
+			colors = ['orange', 'blue', 'green', 'pink', 'brown'];
+			for(var i = 0; i < 5; i++){
+				draw_ghost(context, centerWidth + i * 60, centerHeight + 20, 10, colors[i]);
+			}
+			
+		</script>
+	</body>
+</html>
