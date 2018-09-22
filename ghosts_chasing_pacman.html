@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: #ccccb3;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+		<script src = "objects.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var w = canvas.width;
+			var h = canvas.height;
+			var context = canvas.getContext("2d");
+			
+			let pacman = new PacMan(w/2, h/2, 20, 120);
+			
+			let ghosts = [
+				new Ghost(Math.random() * w, Math.random() * h, 20,
+				70, 'red'),
+				new Ghost(Math.random() * w, Math.random() * h, 20,
+				60, 'pink'),
+				new Ghost(Math.random() * w, Math.random() * h, 20,
+				50, 'cyan'),
+				new Ghost(Math.random() * w, Math.random() * h, 20,
+				40, 'orange')
+			]
+			
+			function draw(context){
+				pacman.draw(context);
+				ghosts.forEach(function(ghost){
+					ghost.draw(context);
+				});
+			}
+			
+			function update(elapsed){
+				pacman.update(elapsed, w, h);
+				ghosts.forEach(function(ghost){
+					ghost.update(elapsed, pacman);
+				});
+			}
+			
+			var previous, elapsed;
+			
+			function frame(timestamp){
+				if(!previous){
+					previous = timestamp;
+				}
+				elapsed = timestamp - previous;
+				
+				context.clearRect(0, 0, w, h);
+				draw(context);
+				update(elapsed / 1000);
+				
+				previous = timestamp;
+				window.requestAnimationFrame(frame);
+			}
+			
+			window.requestAnimationFrame(frame);
+			
+		</script>
+	</body>
+</html>
