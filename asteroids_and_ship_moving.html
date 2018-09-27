@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+	<head>
+		<title> LOVE </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			canvas {
+				background-color: black;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+		<script src = "objects_inheriting_mass.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "600" width = "800"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var width = canvas.width;
+			var height = canvas.height;
+			var context = canvas.getContext("2d");
+			
+			var asteroids = [];
+			for(var i = 0; i < 10; i++){
+				let asteroid = new Asteroid(
+					Math.random() * width,
+					Math.random() * height,
+					2000 + Math.random() * 8000);
+				asteroid.push(Math.random() * 2 * Math.PI, 2000, 60);
+				asteroid.twist((Math.random() - 0.5) * 500, 60);
+				asteroids.push(asteroid);
+			}
+			
+			var ship = new Ship(width/2, height/2);
+			
+			function draw(ctx){
+				draw_grid(ctx);
+				ship.draw(ctx, false);
+				asteroids.forEach(function(asteroid){
+					asteroid.draw(ctx, false);
+				});
+			}
+			
+			function update(elapsed){
+				// if the ship is nearly stopped, turn a bit
+				if(Math.abs(ship.speed()) < 15){
+					ship.angle += Math.PI * 2 * 0.01;
+				}
+				// if the ship is going fast, turn around to slow down
+				if(Math.abs(ship.speed()) > 170){
+					ship.angle = ship.movement_angle() + Math.PI;
+				}
+				
+				// make the ship move in the direction it's pointing
+				ship.push(ship.angle, 1000, elapsed);
+				
+				asteroids.forEach(function(asteroid){
+					asteroid.update(elapsed, context);
+				});
+				ship.update(elapsed, context);
+			}
+			
+			var previous, elapsed;
+			function frame(timestamp){
+				context.clearRect(0, 0, width, height);
+				
+				draw(context);
+				
+				if(!previous){
+					previous = timestamp;
+				}
+				elapsed = timestamp - previous;
+				update(elapsed / 1000);
+				previous = timestamp;
+				
+				window.requestAnimationFrame(frame);
+			}
+			
+			window.requestAnimationFrame(frame);
+			
+		</script>
+	</body>
+</html>
