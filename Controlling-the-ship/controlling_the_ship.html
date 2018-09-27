@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+	<head>
+		<title> Control the ship </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			
+			canvas {
+				background-color: black;
+				border: 10px solid red;
+			}
+			
+			canvas:focus {
+				border: 10px solid grey;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+		<script src = "objects_inheriting_mass.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "520" width = "800" tabindex = "1"> </canvas>
+		<script>
+			var canvas = document.getElementById("asteroid");
+			var width = canvas.width;
+			var height = canvas.height;
+			var context = canvas.getContext("2d");
+			
+			
+			
+			context.canvas.addEventListener("keydown", function(event){
+					key_handler(event, true);
+				}, true);
+				
+			context.canvas.addEventListener("keyup", function(event){
+					key_handler(event, false);
+				}, true);
+			
+			context.canvas.focus();
+			
+			function key_handler(event, value){
+				let key = event.key || event.keyCode;
+				let nothing_handled = false;
+				switch(key){
+					case "ArrowUp": case 38:
+						ship.thruster_on = value; 
+						break;
+					case "ArrowLeft": case 37:
+						ship.left_thruster = value;
+						if(value){
+							ship.stop_rotating = false;
+						}
+						else{
+							ship.stop_rotating = true;
+						}
+						break;
+					case "ArrowRight": case 39:
+						ship.right_thruster = value;
+						if(value){
+							ship.stop_rotating = false;
+						}
+						else{
+							ship.stop_rotating = true;
+						}
+						break;
+					case "g": case 71:
+						if(value) {
+							guide = !guide;
+						}
+						break;
+					case " ": case 32:
+						ship.trigger = value;
+						break;
+					default: nothing_handled = true;
+				}
+				if(!nothing_handled){
+					event.preventDefault();
+				}
+			}
+			
+			
+			var asteroid = new Asteroid(10000,
+				Math.random() * width,
+				Math.random() * height);
+			asteroid.push(Math.random() * 2 * Math.PI, 1000, 60);
+			asteroid.twist(Math.random() * 0.5, 60);
+			
+			var ship = new Ship(10, 15, width / 2, height / 2, 500, 300);
+			
+			var projectiles = [];
+			
+			var guide = false;
+			
+			function draw(){
+				if(guide){
+					draw_grid(context);
+				}
+				asteroid.draw(context, guide);
+				projectiles.forEach(function(projectile){
+					projectile.draw(context, guide);
+				});
+				ship.draw(context, guide);
+			}
+			
+			function update(elapsed){
+				asteroid.update(elapsed, context);
+				ship.update(elapsed, context);
+				projectiles.forEach(function(projectile, i, projectiles){
+					projectile.update(elapsed, context);
+					if(projectile.life <= 0){
+						projectiles.splice(i, 1);
+					}
+				});
+				if(ship.trigger && ship.loaded){
+					projectiles.push(ship.projectile(elapsed));
+				}
+			}
+			
+			var previous, elapsed;
+			function frame(timestamp){
+				if(!previous){
+					previous = timestamp;
+				}
+				elapsed = timestamp - previous;
+				
+				context.clearRect(0, 0, width, height);
+				draw();
+				update(elapsed / 1000);
+				previous = timestamp;
+				
+				window.requestAnimationFrame(frame);
+			}
+			window.requestAnimationFrame(frame);
+			
+		</script>
+	</body>
+</html>
