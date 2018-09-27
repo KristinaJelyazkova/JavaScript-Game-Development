@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+	<head>
+		<title> Asteroids Game </title>
+		<meta charset = "utf-8">
+		<style>
+			body {
+				text-align: center;
+			}
+			
+			canvas {
+				background-color: black;
+				border: 10px solid red;
+			}
+			
+			canvas:focus {
+				border: 10px solid grey;
+			}
+		</style>
+		<script src = "drawing.js"> </script>
+		<script src = "objects_inheriting_mass.js"> </script>
+		<script src = "game.js"> </script>
+	</head>
+	<body>
+		<canvas id = "asteroid" height = "520" width = "800" tabindex = "1"> </canvas>
+		<script>
+			var game = new AsteroidsGame("asteroid");	
+		</script>
+	</body>
+</html>
