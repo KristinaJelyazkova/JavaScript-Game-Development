@@ -146,7 +146,7 @@ function Ship(mass, radius, x, y, power, weapon_power){
 	
 	this.right_thruster = false;
 	this.left_thruster = false;
-	this.steering_power = power / 2;  
+	this.steering_power = power / 5;  
 	this.stop_rotating = false;
 	
 	this.weapon_power = weapon_power || 200;
@@ -292,6 +292,29 @@ NumberIndicator.prototype.draw = function(context, value){
 	context.font = this.pt + "pt Arial";
 	context.textAlign = this.align;
 	context.fillText(this.label + value.toFixed(this.digits), this.x, this.y + this.pt - 1);
+	
+	context.restore();
+}
+
+function Message(x, y, options){
+	options = options || {};
+	this.x = x;
+	this.y = y;
+	this.main_pt = options.main_pt || 28;
+	this.sub_pt = options.sub_pt || 18;
+	this.fill = options.fill || "white";
+	this.textAlign = options.align || "center";
+}
+
+Message.prototype.draw = function(context, main_text, sub_text){
+	context.save();
+	
+	context.fillStyle = this.fill;
+	context.font = this.main_pt + "pt Arial";
+	context.textAlign = this.textAlign;
+	context.fillText(main_text, this.x, this.y);
+	context.font = this.sub_pt + "pt Arial";
+	context.fillText(sub_text, this.x, this.y + this.main_pt);
 	
 	context.restore();
 }
